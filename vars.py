@@ -2,7 +2,6 @@ WID, HEI = 800, 800
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 
-ENEMY_PLAYER_SIZE = 20
-ENEMY_COLOR = (255, 55, 55)
+RED = (255, 0, 0)
 
-DIRECTIONS = {"left", "right", "up", "down"}
+DIRECTIONS = ["left", "right", "up", "down"]
