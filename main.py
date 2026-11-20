@@ -1,15 +1,18 @@
 import pygame
 import sys
+import time
 import vars as v
 import classes as c
 
 pygame.init()
 screen = pygame.display.set_mode((v.WID, v.HEI))
+pygame.display.set_caption("Shape Survival")
 running = True
 game_over = False
 clock = pygame.time.Clock()
+start_time = time.time()
 
-player = c.Player(v.WID // 2, v.HEI // 2, 5, 30)
+player = c.Player(v.WID // 2, v.HEI // 2, 10, 30)
 enemies = [
     c.EnemyBox(100, 100, 10, 50, v.RED, 150, v.DIRECTIONS),
     c.EnemyBox(100, 700, 10, 50, v.RED, 150, v.DIRECTIONS),
@@ -19,6 +22,7 @@ enemies = [
 
 font_small = pygame.font.SysFont(None, 48)
 font_big = pygame.font.SysFont(None, 120)
+font_time = pygame.font.SysFont(None, 24)
 
 while running:
     for event in pygame.event.get():
@@ -30,7 +34,7 @@ while running:
                 running = False
 
             if game_over and event.key == pygame.K_r:
-                player = c.Player(v.WID // 2, v.HEI // 2, 5, 30)
+                player = c.Player(v.WID // 2, v.HEI // 2, 10, 30)
                 enemies = [
                     c.EnemyBox(100, 100, 10, 50, v.RED, 150, v.DIRECTIONS),
                     c.EnemyBox(100, 700, 10, 50, v.RED, 150, v.DIRECTIONS),
@@ -56,12 +60,17 @@ while running:
         player.render(screen)
         for e in enemies:
             e.render(screen)
+        current_time = time.time()
+        int_time = int(current_time - start_time)
+        time_render = font_time.render(f"Время: {int_time} секунды", True, v.BLUE)
+        screen.blit(time_render, (10, 10))
     else:
-        game_over_text = font_big.render("GAME OVER", True, v.WHITE)
+        game_over_text = font_big.render("ПОРАЖЕНИЕ", True, v.WHITE)
         screen.blit(game_over_text, (v.WID // 2 - game_over_text.get_width() // 2, v.HEI // 2 - 40))
-        restart_text = font_small.render("R to restart", True, v.WHITE)
+        restart_text = font_small.render("Нажмите R чтобы начать заново", True, v.WHITE)
         screen.blit(restart_text, (v.WID // 2 - restart_text.get_width() // 2, v.HEI // 2 + 40))
-
+        time_text = font_time.render(f'Вы продержались {int_time} секунды.', True, v.WHITE)
+        screen.blit(time_text, (v.WID // 2 - time_text.get_width() // 2, v.HEI // 2 + 80))
     pygame.display.flip()
     clock.tick(60)
 
